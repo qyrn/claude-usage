@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'"
+    />
+    <title>Usage Claude</title>
+    <link rel="stylesheet" href="./panel.css" />
+  </head>
+  <body>
+    <main id="panel">
+      <header class="panel-header">
+        <span class="panel-title">Usage Claude</span>
+        <button id="refresh-button" type="button">Rafraîchir</button>
+      </header>
+      <ul id="limit-list" class="limit-list"></ul>
+      <p id="error-message" class="error-message" hidden></p>
+      <footer class="panel-footer">
+        <span id="extra-spend"></span>
+        <span id="updated-at"></span>
+      </footer>
+    </main>
+    <script type="module" src="./panel.ts"></script>
+  </body>
+</html>

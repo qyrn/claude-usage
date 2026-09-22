@@ -1,0 +1,52 @@
+{
+  "name": "claude-usage",
+  "version": "0.1.0",
+  "description": "Tray icon showing Claude plan usage on Windows",
+  "author": "qyrn",
+  "license": "MIT",
+  "private": true,
+  "main": "./out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "build:win": "electron-vite build && electron-builder --win",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "packageManager": "pnpm@10.23.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "electron",
+      "esbuild"
+    ]
+  },
+  "build": {
+    "appId": "dev.qyrn.claude-usage",
+    "productName": "Claude Usage",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "out/**/*"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    }
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.6.2",
+    "electron": "^44.4.3",
+    "electron-builder": "^26.15.3",
+    "electron-vite": "^5.0.0",
+    "eslint": "^10.11.0",
+    "globals": "^17.12.0",
+    "prettier": "^3.9.8",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.70.1",
+    "vite": "^7.3.6"
+  }
+}
