@@ -1,6 +1,6 @@
 {
   "name": "claude-usage",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Tray icon showing Claude plan usage on Windows",
   "author": "qyrn",
   "license": "MIT",
