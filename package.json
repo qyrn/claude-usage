@@ -12,7 +12,8 @@
     "build:win": "electron-vite build && electron-builder --win",
     "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "icon": "node scripts/build-icon.mts"
   },
   "packageManager": "pnpm@10.23.0",
   "pnpm": {
@@ -33,7 +34,8 @@
     "win": {
       "target": [
         "nsis"
-      ]
+      ],
+      "icon": "resources/icon.ico"
     }
   },
   "devDependencies": {
@@ -45,6 +47,7 @@
     "eslint": "^10.11.0",
     "globals": "^17.12.0",
     "prettier": "^3.9.8",
+    "sharp": "^0.35.4",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.70.1",
     "vite": "^7.3.6"
