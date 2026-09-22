@@ -4,7 +4,7 @@
 
 # Claude Usage
 
-**Ton usage Claude, toujours sous les yeux. Un coup d'œil à la barre des tâches, et tu sais où tu en es.**
+Le pourcentage de ta session Claude, affiché à côté de l'horloge.
 
 [![Télécharger](https://img.shields.io/github/v/release/qyrn/claude-usage?label=t%C3%A9l%C3%A9charger&color=d97757&style=for-the-badge)](../../releases/latest)
 [![Windows](https://img.shields.io/badge/Windows-10%20%7C%2011-3a3632?style=for-the-badge)](../../releases/latest)
@@ -17,33 +17,27 @@
 
 <br />
 
-Fini de taper `/usage` dans un terminal pour savoir s'il te reste de la marge. Claude Usage pose une petite icône à côté de l'horloge : elle affiche en direct le pourcentage de ta session, et un clic suffit pour voir tout le détail. 👀
+J'en avais marre d'ouvrir un terminal et de taper `/usage` pour savoir s'il me restait de la marge sur Claude. Alors j'ai fait cette petite app : une icône dans la barre des tâches qui montre où en est ta session, et un panneau qui s'ouvre quand tu cliques dessus.
 
-## ✨ Ce que tu vois
+## 👀 Ce qu'il y a dedans
 
-- 🔢 **Ta session en direct** : le pourcentage de ta session de 5 h s'affiche directement dans l'icône, avec une petite barre qui se remplit.
-- 📅 **Ta semaine** : ta limite hebdomadaire, et celle de chaque modèle quand ton abonnement en a une.
-- ⏰ **L'heure du reset** : « reset dans 3 h 21, à 23:00 », pour savoir exactement quand tu repars à zéro.
-- 💶 **Tes crédits extra** : ce que tu as dépensé au-delà de ton forfait.
-- 💬 **Au survol** : tous les chiffres dans une infobulle, sans même cliquer.
+Le chiffre dans l'icône, c'est ta session de 5 heures. La petite barre en dessous se remplit en même temps.
 
-## 🚦 L'icône change de couleur
+Clique dessus et tu as le reste : ta limite de la semaine, celle par modèle si ton abonnement en a une, et l'heure à laquelle chaque compteur repart à zéro. Si tu as payé des crédits en plus de ton forfait, le montant est affiché en bas.
+
+Pas envie de cliquer ? Passe juste la souris sur l'icône, les chiffres apparaissent dans une bulle.
+
+## 🚦 Les couleurs
 
 <div align="center">
 <img src="docs/states.png" width="500" alt="Icône en orange à 24 %, en jaune à 76 %, en rouge à 94 %" />
 </div>
 
-<div align="center">
+En orange, tout va bien. Elle passe au jaune à 70 %, là tu commences à avoir bien tapé dedans. Au rouge, à 90 %, il est temps de ralentir, ou d'aller prendre un café en attendant le reset.
 
-| 🟠 Tranquille |   🟡 Attention   | 🔴 Presque au bout |
-| :-----------: | :--------------: | :----------------: |
-| moins de 70 % | à partir de 70 % |  à partir de 90 %  |
+## 🌗 Clair ou sombre
 
-</div>
-
-Pas besoin de lire le chiffre : la couleur te dit déjà s'il faut lever le pied.
-
-## 🌗 Clair ou sombre, il suit ton Windows
+Le panneau prend tout seul les couleurs de ton Windows.
 
 <div align="center">
 <img src="docs/panel-dark.png" width="320" alt="Panneau en thème sombre" />
@@ -51,67 +45,67 @@ Pas besoin de lire le chiffre : la couleur te dit déjà s'il faut lever le pied
 <img src="docs/panel-light.png" width="320" alt="Panneau en thème clair" />
 </div>
 
-## 🖱️ Tout le reste au clic droit
+## 🖱️ Le clic droit
 
 <div align="center">
 <img src="docs/menu.png" width="400" alt="Menu clic droit : Rafraîchir, Lancer au démarrage de Windows, Rechercher des mises à jour, Version, Quitter" />
 </div>
 
-Rafraîchir à la demande, activer ou couper le lancement au démarrage, chercher une mise à jour, voir ta version.
+Pour forcer une mise à jour des chiffres, empêcher l'app de se lancer avec Windows, ou vérifier si une nouvelle version est sortie.
 
-## 📥 Installer en 3 étapes
+## 📥 Installation
 
-1. **Télécharge** `claude-usage-setup-x.x.x.exe` sur la [page des versions](../../releases/latest).
-2. **Lance-le.** Pas besoin de droits administrateur, l'installation prend quelques secondes.
-3. **Épingle l'icône** : Windows 11 cache les nouvelles icônes derrière la petite flèche `^` à côté de l'horloge. Glisse-la dans la barre des tâches pour l'avoir toujours visible.
+1. Télécharge `claude-usage-setup-x.x.x.exe` sur la [page des versions](../../releases/latest).
+2. Double-clique dessus. Aucune question, pas besoin d'être administrateur, c'est installé en quelques secondes.
+3. Sur Windows 11, l'icône atterrit souvent dans le petit menu caché (la flèche `^` près de l'horloge). Fais-la glisser dans la barre des tâches pour la garder à l'œil.
 
-Et c'est tout. L'app démarre toute seule avec Windows. 🎉
+Ensuite, elle se lance toute seule à chaque démarrage du PC.
 
-> 💡 **Il te faut** Claude Code, connecté avec ton abonnement Claude. Si ce n'est pas encore fait : ouvre un terminal, tape `claude`, puis `/login`.
+Il faut avoir Claude Code installé et connecté à ton compte Claude. Si ce n'est pas fait, ouvre un terminal, tape `claude`, puis `/login`.
 
-> 🛡️ Au premier lancement, Windows peut afficher « Windows a protégé votre ordinateur ». C'est normal pour une petite app pas encore connue de Microsoft : clique sur **Informations complémentaires**, puis **Exécuter quand même**.
+> [!NOTE]
+> La première fois, Windows va sûrement afficher une fenêtre bleue « Windows a protégé votre ordinateur ». Il fait ça avec toutes les petites apps qu'il ne connaît pas encore. Clique sur « Informations complémentaires », puis sur « Exécuter quand même ».
 
-## 🔄 Toujours à jour, sans rien faire
+## 🔄 Les mises à jour
 
-L'app vérifie elle-même s'il existe une nouvelle version, la télécharge en arrière-plan, puis te prévient par une notification. Un clic pour redémarrer, et c'est installé. Si tu ignores la notification, la mise à jour s'installe à la prochaine fermeture.
+Quand je sors une nouvelle version, l'app la télécharge dans son coin et t'envoie une notification. Tu cliques dessus, elle redémarre, c'est à jour. Si tu ne cliques pas, elle s'installera la prochaine fois que l'app se ferme.
 
-## 🔒 Tes données restent chez toi
+## 🔒 Et tes données ?
 
-- L'app lit la connexion que Claude Code a déjà enregistrée sur ton PC. Tu n'as rien à saisir.
-- Elle demande tes chiffres directement à Anthropic, exactement comme la commande `/usage`.
-- Rien n'est envoyé ailleurs, rien n'est collecté.
-- Chaque personne qui l'installe voit **son propre** usage, jamais celui de quelqu'un d'autre.
+L'app utilise la connexion que Claude Code a déjà enregistrée sur ton PC, donc tu n'as rien à taper. Elle pose à Anthropic la même question que la commande `/usage`, et c'est tout. Je ne récupère rien, et il n'y a aucun serveur à moi entre les deux.
 
-## ❓ Un petit souci ?
+Si un pote l'installe, il voit son usage à lui, pas le tien.
+
+## 🤔 Si ça coince
 
 <details>
 <summary><b>« Token expiré » ou « Token refusé »</b></summary>
 <br />
-Ta connexion Claude Code a besoin d'être rafraîchie. Ouvre Claude Code une fois, puis clique sur <b>Rafraîchir</b> dans le panneau.
+Ouvre Claude Code une fois, ça renouvelle la connexion. Ensuite clique sur Rafraîchir dans le panneau.
 </details>
 
 <details>
 <summary><b>« Identifiants Claude Code introuvables »</b></summary>
 <br />
-Claude Code n'est pas connecté sur cette session Windows. Ouvre un terminal, tape <code>claude</code>, puis <code>/login</code>.
+Claude Code n'est pas connecté sur ce PC. Dans un terminal, tape <code>claude</code>, puis <code>/login</code>.
 </details>
 
 <details>
 <summary><b>« Trop de requêtes »</b></summary>
 <br />
-Le serveur demande de patienter un peu. Les chiffres reviennent tout seuls quelques minutes plus tard.
+Anthropic demande de lever le pied sur les requêtes. Attends quelques minutes, les chiffres reviennent tout seuls.
 </details>
 
 <details>
-<summary><b>Je ne vois pas l'icône</b></summary>
+<summary><b>L'icône a disparu</b></summary>
 <br />
-Elle est sûrement cachée derrière la petite flèche <code>^</code> à côté de l'horloge. Glisse-la dans la barre des tâches.
+Elle se cache sûrement derrière la flèche <code>^</code> à côté de l'horloge. Fais-la glisser dans la barre des tâches.
 </details>
 
 ---
 
 <details>
-<summary>🛠️ <b>Pour les développeurs</b></summary>
+<summary>🛠️ <b>Pour bidouiller le code</b></summary>
 
 <br />
 
@@ -125,9 +119,9 @@ pnpm lint
 pnpm build:win    # génère l'installeur dans dist/
 ```
 
-**Publier une version** : monter `version` dans `package.json`, lancer `pnpm build:win`, puis joindre à une release GitHub les trois fichiers de `dist/` : l'installeur `.exe`, son `.blockmap` et `latest.yml`. Sans ces trois fichiers, la mise à jour automatique ne voit pas la nouvelle version.
+Pour publier une version : monte `version` dans `package.json`, lance `pnpm build:win`, puis joins à une release GitHub les trois fichiers de `dist/` (l'installeur `.exe`, son `.blockmap` et `latest.yml`). S'il en manque un, la mise à jour automatique ne verra pas la nouvelle version.
 
-**L'icône** est dessinée dans `resources/icon.svg`. Après une modification, `pnpm icon` régénère `resources/icon.ico`.
+L'icône est dessinée dans `resources/icon.svg`. Si tu la modifies, `pnpm icon` régénère `resources/icon.ico`.
 
 | Dossier              | Rôle                                                                           |
 | -------------------- | ------------------------------------------------------------------------------ |
