@@ -31,7 +31,7 @@ Les chiffres se mettent à jour toutes les 2 minutes, à l'ouverture du panneau 
 
 ## Installer
 
-1. Télécharger `Claude.Usage.Setup.x.x.x.exe` depuis la [page Releases](../../releases/latest) et le lancer. L'installation se fait sans droits administrateur.
+1. Télécharger `claude-usage-setup-x.x.x.exe` depuis la [page Releases](../../releases/latest) et le lancer. L'installation se fait sans droits administrateur.
 2. L'app démarre dans la zone de notification et s'ajoute au démarrage de Windows.
 3. Windows 11 range les nouvelles icônes dans le menu caché (la flèche `^`). Glisser l'icône dans la barre des tâches pour l'avoir toujours sous les yeux.
 

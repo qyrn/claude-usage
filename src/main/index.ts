@@ -1,8 +1,9 @@
-import { app, ipcMain, Menu, powerMonitor, screen, Tray } from 'electron'
+import { app, ipcMain, Menu, powerMonitor, screen, Tray, type MenuItemConstructorOptions } from 'electron'
 import { IpcChannel, sessionLimitOf, type UsageState } from '../shared/usage'
 import { enableAutoStartOnFirstRun, isAutoStartEnabled, setAutoStart } from './autoStart'
 import { createPanelWindow, type PanelWindow } from './panelWindow'
 import { renderTrayIcon } from './trayIcon'
+import { createUpdater } from './updater'
 import { createUsageMonitor } from './usageMonitor'
 
 let tray: Tray | null = null
@@ -23,6 +24,14 @@ function renderState(state: UsageState): void {
 }
 
 const monitor = createUsageMonitor(renderState)
+const updater = createUpdater(() => tray?.setContextMenu(buildContextMenu()))
+
+function updateMenuItem(): MenuItemConstructorOptions {
+  const readyVersion = updater.getReadyVersion()
+  return readyVersion
+    ? { label: `Redémarrer pour installer la ${readyVersion}`, click: () => updater.installNow() }
+    : { label: 'Rechercher des mises à jour', click: () => void updater.checkNow() }
+}
 
 function buildContextMenu(): Menu {
   return Menu.buildFromTemplate([
@@ -34,6 +43,9 @@ function buildContextMenu(): Menu {
       checked: isAutoStartEnabled(),
       click: (item) => setAutoStart(item.checked)
     },
+    { type: 'separator' },
+    updateMenuItem(),
+    { label: `Version ${app.getVersion()}`, enabled: false },
     { type: 'separator' },
     { label: 'Quitter', click: () => app.quit() }
   ])
@@ -60,6 +72,7 @@ if (!app.requestSingleInstanceLock()) {
     tray.on('click', (_event, bounds) => panel?.toggle(bounds))
     powerMonitor.on('resume', () => void monitor.refresh())
     monitor.start()
+    updater.start()
   })
 
   app.on('second-instance', () => {
