@@ -10,9 +10,9 @@ let tray: Tray | null = null
 let panel: PanelWindow | null = null
 
 function tooltipFor(state: UsageState): string {
-  if (!state.snapshot) return `Claude : ${state.errorMessage ?? 'chargement...'}`
+  if (!state.snapshot) return `Claude : ${state.error?.message ?? 'chargement...'}`
   const lines = state.snapshot.limits.map((limit) => `${limit.label} : ${Math.round(limit.percent)} %`)
-  if (state.errorMessage) lines.push(state.errorMessage)
+  if (state.error) lines.push(state.error.message)
   return lines.join('\n').slice(0, 127)
 }
 
@@ -70,7 +70,7 @@ if (!app.requestSingleInstanceLock()) {
     tray = new Tray(renderTrayIcon(null, screen.getPrimaryDisplay().scaleFactor))
     tray.setContextMenu(buildContextMenu())
     tray.on('click', (_event, bounds) => panel?.toggle(bounds))
-    powerMonitor.on('resume', () => void monitor.refresh())
+    powerMonitor.on('resume', () => void monitor.refreshIfStale())
     monitor.start()
     updater.start()
   })

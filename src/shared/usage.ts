@@ -16,9 +16,16 @@ export interface UsageSnapshot {
   fetchedAt: string
 }
 
+export type UsageErrorKind = 'auth' | 'rateLimit' | 'network' | 'unexpected'
+
+export interface UsageError {
+  message: string
+  kind: UsageErrorKind
+}
+
 export interface UsageState {
   snapshot: UsageSnapshot | null
-  errorMessage: string | null
+  error: UsageError | null
   isRefreshing: boolean
 }
 

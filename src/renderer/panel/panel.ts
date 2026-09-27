@@ -45,7 +45,9 @@ function describeReset(resetsAt: string | null): string {
 
 function describeUpdatedAt(fetchedAt: string): string {
   const elapsedMinutes = Math.floor((Date.now() - new Date(fetchedAt).getTime()) / oneMinuteMs)
-  return elapsedMinutes < 1 ? "à l'instant" : `il y a ${elapsedMinutes} min`
+  if (elapsedMinutes < 1) return "mis à jour à l'instant"
+  if (elapsedMinutes < 60) return `mis à jour il y a ${elapsedMinutes} min`
+  return `mis à jour il y a ${Math.floor(elapsedMinutes / 60)} h`
 }
 
 function createElement(tag: string, className: string, text = ''): HTMLElement {
@@ -80,17 +82,18 @@ function formatMoney(amount: number, currency: string): string {
 
 function render(): void {
   if (!currentState) return
-  const { snapshot, errorMessage: error, isRefreshing } = currentState
+  const { snapshot, error, isRefreshing } = currentState
+  const visibleError = !snapshot || error?.kind === 'auth' ? (error?.message ?? null) : null
 
   limitList.replaceChildren(...(snapshot?.limits.map(renderLimit) ?? []))
-  errorMessage.hidden = !error
-  errorMessage.textContent = error ?? ''
+  errorMessage.hidden = !visibleError
+  errorMessage.textContent = visibleError ?? ''
   refreshButton.disabled = isRefreshing
   refreshButton.textContent = isRefreshing ? 'Chargement...' : 'Rafraîchir'
 
   const spend = snapshot?.extraSpend
-  extraSpend.textContent = spend ? `Crédits extra : ${formatMoney(spend.amount, spend.currency)}` : ''
-  updatedAt.textContent = snapshot ? `Mis à jour ${describeUpdatedAt(snapshot.fetchedAt)}` : ''
+  extraSpend.textContent = spend ? `Extra consommé : ${formatMoney(spend.amount, spend.currency)}` : ''
+  updatedAt.textContent = snapshot ? describeUpdatedAt(snapshot.fetchedAt) : ''
 
   window.usageApi.reportContentHeight(panel.getBoundingClientRect().height)
 }

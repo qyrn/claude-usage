@@ -11,7 +11,8 @@ async function readCredentialsFile(): Promise<unknown> {
     return JSON.parse(await readFile(credentialsPath, 'utf8'))
   } catch {
     throw new UsageUnavailableError(
-      'Identifiants Claude Code introuvables. Connecte-toi avec claude puis /login.'
+      'Identifiants Claude Code introuvables. Connecte-toi avec claude puis /login.',
+      'auth'
     )
   }
 }
@@ -20,10 +21,10 @@ export async function readAccessToken(): Promise<string> {
   const credentials = await readCredentialsFile()
   const oauth = isRecord(credentials) ? credentials.claudeAiOauth : null
   if (!isRecord(oauth) || typeof oauth.accessToken !== 'string') {
-    throw new UsageUnavailableError('Pas de connexion Claude (abonnement) dans Claude Code.')
+    throw new UsageUnavailableError('Pas de connexion Claude (abonnement) dans Claude Code.', 'auth')
   }
   if (typeof oauth.expiresAt === 'number' && oauth.expiresAt <= Date.now()) {
-    throw new UsageUnavailableError('Token expiré. Lance Claude Code une fois pour le rafraîchir.')
+    throw new UsageUnavailableError('Token expiré. Lance Claude Code une fois pour le rafraîchir.', 'auth')
   }
   return oauth.accessToken
 }

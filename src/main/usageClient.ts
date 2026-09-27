@@ -37,10 +37,14 @@ function parseExtraSpend(raw: unknown): ExtraSpend | null {
   return { amount: amountMinor / 10 ** exponent, currency }
 }
 
-function messageForStatus(status: number): string {
-  if (status === 401 || status === 403) return 'Token refusé. Lance Claude Code une fois pour le rafraîchir.'
-  if (status === 429) return 'Trop de requêtes, nouvel essai au prochain cycle.'
-  return `Le serveur a répondu ${status}.`
+function errorForStatus(status: number): UsageUnavailableError {
+  if (status === 401 || status === 403) {
+    return new UsageUnavailableError('Token refusé. Lance Claude Code une fois pour le rafraîchir.', 'auth')
+  }
+  if (status === 429) {
+    return new UsageUnavailableError('Chiffres non rafraîchis, le serveur limite les requêtes.', 'rateLimit')
+  }
+  return new UsageUnavailableError(`Le serveur a répondu ${status}.`, 'unexpected')
 }
 
 async function requestUsage(accessToken: string): Promise<Response> {
@@ -50,16 +54,16 @@ async function requestUsage(accessToken: string): Promise<Response> {
       signal: AbortSignal.timeout(requestTimeoutMs)
     })
   } catch {
-    throw new UsageUnavailableError('Serveur injoignable. Vérifie ta connexion.')
+    throw new UsageUnavailableError('Serveur injoignable. Vérifie ta connexion.', 'network')
   }
 }
 
 export async function fetchUsage(accessToken: string): Promise<UsageSnapshot> {
   const response = await requestUsage(accessToken)
-  if (!response.ok) throw new UsageUnavailableError(messageForStatus(response.status))
+  if (!response.ok) throw errorForStatus(response.status)
   const body: unknown = await response.json().catch(() => null)
   if (!isRecord(body) || !Array.isArray(body.limits)) {
-    throw new UsageUnavailableError('Réponse inattendue du serveur.')
+    throw new UsageUnavailableError('Réponse inattendue du serveur.', 'unexpected')
   }
   return {
     limits: body.limits.map(parseLimit).filter((limit): limit is UsageLimit => limit !== null),

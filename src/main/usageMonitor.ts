@@ -3,8 +3,9 @@ import { readAccessToken } from './credentials'
 import { fetchUsage } from './usageClient'
 import { UsageUnavailableError } from './usageUnavailableError'
 
-const pollIntervalMs = 2 * 60_000
-const staleAfterMs = 20_000
+const basePollIntervalMs = 15 * 60_000
+const maxPollIntervalMs = 60 * 60_000
+const panelStaleAfterMs = 5 * 60_000
 
 export interface UsageMonitor {
   start: () => void
@@ -14,8 +15,10 @@ export interface UsageMonitor {
 }
 
 export function createUsageMonitor(onChange: (state: UsageState) => void): UsageMonitor {
-  let state: UsageState = { snapshot: null, errorMessage: null, isRefreshing: false }
-  let lastAttemptAt = 0
+  let state: UsageState = { snapshot: null, error: null, isRefreshing: false }
+  let consecutiveRateLimits = 0
+  let nextAttemptAt = 0
+  let timer: NodeJS.Timeout | null = null
   let pendingRefresh: Promise<void> | null = null
 
   function update(next: Partial<UsageState>): void {
@@ -23,15 +26,31 @@ export function createUsageMonitor(onChange: (state: UsageState) => void): Usage
     onChange(state)
   }
 
+  function scheduleNext(delayMs: number): void {
+    if (timer) clearTimeout(timer)
+    nextAttemptAt = Date.now() + delayMs
+    timer = setTimeout(() => void refresh(), delayMs)
+  }
+
+  function delayAfterRateLimit(): number {
+    return Math.min(basePollIntervalMs * 2 ** (consecutiveRateLimits - 1), maxPollIntervalMs)
+  }
+
   async function runRefresh(): Promise<void> {
-    lastAttemptAt = Date.now()
     update({ isRefreshing: true })
     try {
       const snapshot = await fetchUsage(await readAccessToken())
-      update({ snapshot, errorMessage: null, isRefreshing: false })
-    } catch (error) {
-      const message = error instanceof UsageUnavailableError ? error.message : 'Erreur inattendue.'
-      update({ errorMessage: message, isRefreshing: false })
+      consecutiveRateLimits = 0
+      update({ snapshot, error: null, isRefreshing: false })
+      scheduleNext(basePollIntervalMs)
+    } catch (caught) {
+      const error =
+        caught instanceof UsageUnavailableError
+          ? { message: caught.message, kind: caught.kind }
+          : { message: 'Erreur inattendue.', kind: 'unexpected' as const }
+      if (error.kind === 'rateLimit') consecutiveRateLimits++
+      update({ error, isRefreshing: false })
+      scheduleNext(error.kind === 'rateLimit' ? delayAfterRateLimit() : basePollIntervalMs)
     }
   }
 
@@ -42,13 +61,15 @@ export function createUsageMonitor(onChange: (state: UsageState) => void): Usage
     return pendingRefresh
   }
 
+  function isSnapshotFresh(): boolean {
+    const fetchedAt = state.snapshot?.fetchedAt
+    return fetchedAt !== undefined && Date.now() - new Date(fetchedAt).getTime() < panelStaleAfterMs
+  }
+
   return {
-    start: () => {
-      void refresh()
-      setInterval(() => void refresh(), pollIntervalMs)
-    },
+    start: () => void refresh(),
     refresh,
-    refreshIfStale: () => (Date.now() - lastAttemptAt > staleAfterMs ? refresh() : Promise.resolve()),
+    refreshIfStale: () => (isSnapshotFresh() || Date.now() < nextAttemptAt ? Promise.resolve() : refresh()),
     getState: () => state
   }
 }
