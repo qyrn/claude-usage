@@ -92,7 +92,7 @@ function render(): void {
   refreshButton.textContent = isRefreshing ? 'Chargement...' : 'Rafraîchir'
 
   const spend = snapshot?.extraSpend
-  extraSpend.textContent = spend ? `Extra consommé : ${formatMoney(spend.amount, spend.currency)}` : ''
+  extraSpend.textContent = spend ? `Extra dépensé : ${formatMoney(spend.amount, spend.currency)}` : ''
   updatedAt.textContent = snapshot ? describeUpdatedAt(snapshot.fetchedAt) : ''
 
   window.usageApi.reportContentHeight(panel.getBoundingClientRect().height)
